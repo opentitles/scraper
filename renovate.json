@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "packageRules": [
+    {
+      "depTypeList": ["dependencies", "devDependencies"],
+      "updateTypes": ["minor", "patch", "pin", "digest", "lockFileMaintenance", "rollback", "bump"],
+      "automerge": true
+    }
+  ]
+}
