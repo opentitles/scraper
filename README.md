@@ -11,4 +11,4 @@ If you would like to contribute to the list of media being tracked, please check
 'History' logo by Sugeng Santoso
 
 ### About this component - Scraper
-This component iterates all the RSS feeds defined in 
+This component iterates all the RSS feeds defined in the shared [OpenTitles definition](https://github.com/Fdebijl/OpenTitles.Definition).
