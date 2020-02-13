@@ -25,7 +25,7 @@ ENV NODE_ENV=production
 
 # Setup cronjob to run crawler
 RUN mkdir -p /etc/cron.d
-COPY trackr-cron /etc/cron.d/opentitles-cron
+COPY opentitles-cron /etc/cron.d/opentitles-cron
 RUN chmod 0644 /etc/cron.d/opentitles-cron
 RUN crontab /etc/cron.d/opentitles-cron
 
