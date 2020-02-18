@@ -20,7 +20,7 @@
     "rss-parser": "3.7.5"
   },
   "devDependencies": {
-    "@types/async": "3.0.7",
+    "@types/async": "3.0.8",
     "@types/cors": "2.8.6",
     "@types/express": "4.17.2",
     "@types/mongodb": "3.3.16",
