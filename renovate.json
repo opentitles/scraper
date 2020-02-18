@@ -6,6 +6,7 @@
     {
       "depTypeList": ["dependencies", "devDependencies"],
       "updateTypes": ["minor", "patch", "pin", "digest", "lockFileMaintenance", "rollback", "bump"],
+      "requiredStatusChecks": null,
       "automerge": true
     }
   ]
