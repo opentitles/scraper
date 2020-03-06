@@ -32,4 +32,4 @@ RUN crontab /etc/cron.d/opentitles-cron
 # Create the log files to be able to run tail
 RUN touch /var/log/cron.log
 RUN touch /usr/src/opentitles/crawler.log
-CMD crond
+CMD crond && tail -f /var/log/cron.log
