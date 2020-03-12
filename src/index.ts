@@ -56,7 +56,7 @@ const init = (): Promise<MongoClient> => {
  * Notify all defined listeners that the title for an article has changed.
  * @param {Object} article The article object.
  */
-const notifyListeners = async (article: ExtendedItem): Promise<void> => {
+const notifyListeners = async (article: Article): Promise<void> => {
   return new Promise((resolve) => {
     if (!article.org || !article.articleID) {
       resolve();
@@ -90,7 +90,7 @@ const notifyListeners = async (article: ExtendedItem): Promise<void> => {
  * Find an article in the database for a given organisation and ID.
  * @param {object} find Object with org and articleid to query with the DB.
  */
-const findArticle = async (find: object): Promise<Error | ExtendedItem | null> => {
+const findArticle = async (find: object): Promise<Error | Article | null> => {
   return new Promise((resolve) => {
     dbo.collection('articles').findOne(find, function(err, res) {
       if (err) {
