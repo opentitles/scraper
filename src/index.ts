@@ -23,11 +23,11 @@ const parser = new Parser({
 });
 
 const listeners: Listener[] = [
-  // {
-  //   name: 'NOSEdits',
-  //   interestedOrgs: ['NOS'],
-  //   webhookuri: 'http://127.0.0.1:7676/notify',
-  // },
+  {
+    name: 'NOSEdits',
+    interestedOrgs: ['NOS'],
+    webhookuri: 'http://10.10.10.15:7676/notify',
+  },
 ];
 
 if (!fs.existsSync('media.json')) {
