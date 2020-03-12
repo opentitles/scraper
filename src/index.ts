@@ -123,7 +123,7 @@ const checkWithDB = (item: ExtendedItem): Promise<void> => {
       // Does not exit yet in DB
       const newArticle = await itemToArticle(item);
       dbo.collection('articles').insertOne(newArticle);
-      clog(`[${item.org}:${item.artid}] Added new article to collection`);
+      // clog(`[${item.org}:${item.artid}] Added new article to collection`);
       resolve();
     }
 
@@ -133,7 +133,7 @@ const checkWithDB = (item: ExtendedItem): Promise<void> => {
           // Article was already seen but we have a new title, add the latest title
           res.titles.push({title: item.title, datetime: moment().format('MMMM Do YYYY, h:mm:ss a'), timestamp: moment.now()});
           dbo.collection('articles').replaceOne(find, res);
-          clog(`[${item.org}:${item.artid}] New title added for article`);
+          // clog(`[${item.org}:${item.artid}] New title added for article`);
           await notifyListeners(res);
           return;
         } else {
@@ -193,7 +193,7 @@ const retrieveArticles = (): Promise<void> => {
                   return nextFeed();
                 })
                 .catch((err) => {
-                  // console.log(`Could not retrieve ${medium.prefix + feedname + medium.suffix}`);
+                  clog(`Could not retrieve ${medium.prefix + feedname + medium.suffix}`);
                   return nextFeed();
                 });
           }, async (err) => {
@@ -211,15 +211,17 @@ const retrieveArticles = (): Promise<void> => {
           });
         }, (err) => {
           // Callback function once all media are processed.
+          clog(`Processed all media for ${countrycode}, retrieving next country`)
           if (err) {
             // One of the media failed to process, do something here.
             clog(err);
           }
+
+          i++;
+          retrieveNextCountry();
         });
-        i++;
-        retrieveNextCountry();
       } else {
-        // Callback once all countries are processed.
+        resolve();
       }
     };
 
@@ -228,8 +230,13 @@ const retrieveArticles = (): Promise<void> => {
 }
 
 init()
-  .then((client) => {
-    retrieveArticles();
+  .then(() => {
+    const start = moment();
+    retrieveArticles().then(() => {
+      const end = moment();
+      clog(`Finished scraping run after ${end.diff(start, 'seconds')}s`);
+      process.exit(1);
+    })
   })
   .catch((error) => {
     clog(`Could not init OpenTitles.Scraper:`);
