@@ -17,7 +17,7 @@
     "moment": "2.24.0",
     "mongodb": "3.5.5",
     "request": "2.88.2",
-    "rss-parser": "3.7.5"
+    "rss-parser": "3.7.6"
   },
   "devDependencies": {
     "@types/async": "3.0.8",
