@@ -8,10 +8,10 @@ import * as CONFIG from './config';
 
 import { clog } from './util/logging';
 import { itemToArticle } from './util/article';
+import { ExtendedOutput } from './domain/ExtendedOutput';
 import { ExtendedItem } from './domain/ExtendedItem';
-import { ValidatingProcessor } from './processors/ValidatingProcessor';
-import { Processor } from './domain/Processor';
-import { deduplicate } from './util/deduplicate';
+import { deduplicate } from './processors/deduplicate';
+import { processFeed } from './processors/processFeed';
 
 const parser = new Parser({
   headers: {'User-Agent': 'OpenTitles Scraper by floris@debijl.xyz'},
@@ -148,7 +148,7 @@ const checkWithDB = (item: ExtendedItem): Promise<void> => {
  * Send every item to be checked by the DB.
  */
 const checkAndPropagate = async (items: ExtendedItem[]): Promise<void> => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     let i = 0;
     const limit = items.length;
 
@@ -188,13 +188,12 @@ const retrieveArticles = (): Promise<void> => {
           async.forEachSeries(medium.feeds, (feedname, nextFeed) => {
             parser.parseURL(medium.prefix + feedname + medium.suffix)
                 .then(async (feed) => {
-                  const feedProcessor: Processor = new ValidatingProcessor(feed, medium, feedname, countrycode);
-                  const confirmedFeed = await feedProcessor.toExtendedOutput();
+                  const confirmedFeed = await processFeed(feed, medium, feedname, countrycode) as ExtendedOutput;
                   mediumfeed.items.push(...confirmedFeed.items);
                   return nextFeed();
                 })
                 .catch((err) => {
-                  clog(`Could not retrieve ${medium.prefix + feedname + medium.suffix}: ${err}`);
+                  clog(`Could not retrieve ${medium.prefix + feedname + medium.suffix}`);
                   return nextFeed();
                 });
           }, async (err) => {
