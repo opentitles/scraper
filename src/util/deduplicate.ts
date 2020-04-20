@@ -6,7 +6,7 @@ import { ExtendedOutput } from "../domain/ExtendedOutput";
  * @return {object} The mediumfeed without any duplicate entries.
  */
 export const deduplicate = (feed: ExtendedOutput): Promise<ExtendedOutput> => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     // Reduce feed items to unique ID's only
     const seen = {};
 
