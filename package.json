@@ -11,6 +11,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "@fdebijl/clog": "^1.26.1",
+    "amqplib": "^0.5.5",
     "async": "3.2.0",
     "dotenv": "8.2.0",
     "moment": "2.25.3",
@@ -19,6 +20,7 @@
     "rss-parser": "3.7.6"
   },
   "devDependencies": {
+    "@types/amqplib": "^0.5.13",
     "@types/async": "3.2.1",
     "@types/mongodb": "3.5.14",
     "@types/xml2js": "^0.4.5",
