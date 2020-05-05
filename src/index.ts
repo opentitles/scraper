@@ -1,20 +1,19 @@
 import fs from 'fs';
 import moment from 'moment';
 import async from 'async';
-import request from 'request';
 import Parser from 'rss-parser';
 import { MongoClient, Db } from 'mongodb';
-import * as CONFIG from './config';
+import { Clog, LOGLEVEL } from '@fdebijl/clog';
 
-import { clog } from './util/logging';
+import * as CONFIG from './config';
 import { itemToArticle } from './util/article';
-import { ExtendedOutput } from './domain/ExtendedOutput';
-import { ExtendedItem } from './domain/ExtendedItem';
-import { deduplicate } from './processors/deduplicate';
-import { processFeed } from './processors/processFeed';
+import { ExtendedOutput, ExtendedItem } from './domain';
+import {  } from './domain/ExtendedItem';
+import { deduplicate, processFeed } from './processors';
+import { Notifier, WebhookNotifier, NullNotifier } from './notifiers';
 
 const parser = new Parser({
-  headers: {'User-Agent': 'OpenTitles Scraper by floris@debijl.xyz'},
+  headers: {'User-Agent': 'OpenTitles Scraper by contact@opentitles.info'},
   timeout: 5000,
   maxRedirects: 3,
   customFields: {
@@ -22,19 +21,15 @@ const parser = new Parser({
   },
 });
 
-const listeners: Listener[] = [
-  {
-    name: 'NOSEdits',
-    interestedOrgs: ['NOS'],
-    webhookuri: 'http://10.10.10.15:7676/notify',
-  },
-];
+// Note on logging: some extremely frequent events are supressed using LOGLEVEL.OFF in this file
+const clog = new Clog(CONFIG.MIN_LOGLEVEL as LOGLEVEL);
 
 if (!fs.existsSync('media.json')) {
-  throw new Error('Media.json could not be found in the server directory.');
+  throw new Error('Media.json could not be found in the scraper directory.');
 } const config = JSON.parse(fs.readFileSync('media.json', 'utf8')) as MediaDefinition;
 
 let dbo: Db;
+let notifier: Notifier;
 
 const init = (): Promise<MongoClient> => {
   return new Promise((resolve, reject) => {
@@ -44,45 +39,12 @@ const init = (): Promise<MongoClient> => {
       useUnifiedTopology: true
     }).then((client) => {
       dbo = client.db('opentitles');
-      clog(`Connected to ${CONFIG.MONGO_URL}`);
+      clog.log(`Connected to ${CONFIG.MONGO_URL}`, LOGLEVEL.DEBUG);
+      notifier = new WebhookNotifier();
       resolve(client);
     }).catch((err) => {
       reject(err);
     });
-  });
-}
-
-/**
- * Notify all defined listeners that the title for an article has changed.
- * @param {Object} article The article object.
- */
-const notifyListeners = async (article: Article): Promise<void> => {
-  return new Promise((resolve) => {
-    if (!article.org || !article.articleID) {
-      resolve();
-    }
-
-    if (listeners.length === 0) {
-      resolve();
-    }
-
-    listeners.forEach((listener) => {
-      if (listener.interestedOrgs.includes(article.org)) {
-        request.post({
-          uri: listener.webhookuri,
-          json: true,
-          body: article,
-        }, (err) => {
-          if (err) {
-            clog(`Could not reach ${listener.name} when issuing webhook.`);
-          } else {
-            clog(`Reached ${listener.name} for [${article.org}:${article.articleID}].`);
-          }
-        });
-      }
-    });
-
-    return;
   });
 }
 
@@ -115,7 +77,7 @@ const checkWithDB = (item: ExtendedItem): Promise<void> => {
     const res = await findArticle(find);
 
     if (res instanceof Error) {
-      clog(res);
+      clog.log(res, LOGLEVEL.ERROR);
       resolve();
     }
 
@@ -123,7 +85,7 @@ const checkWithDB = (item: ExtendedItem): Promise<void> => {
       // Does not exit yet in DB
       const newArticle = await itemToArticle(item);
       dbo.collection('articles').insertOne(newArticle);
-      // clog(`[${item.org}:${item.artid}] Added new article to collection`);
+      clog.log(`[${item.org}:${item.artid}] Added new article to collection`, LOGLEVEL.OFF);
       resolve();
     }
 
@@ -133,11 +95,11 @@ const checkWithDB = (item: ExtendedItem): Promise<void> => {
           // Article was already seen but we have a new title, add the latest title
           res.titles.push({title: item.title, datetime: moment().format('MMMM Do YYYY, h:mm:ss a'), timestamp: moment.now()});
           dbo.collection('articles').replaceOne(find, res);
-          // clog(`[${item.org}:${item.artid}] New title added for article`);
-          await notifyListeners(res);
+          clog.log(`[${item.org}:${item.artid}] New title added for article`, LOGLEVEL.OFF);
+          await notifier.notifyListeners(res);
           return;
         } else {
-          // clog(`No new title for [${item.org}:${item.artid}]`);
+          clog.log(`No new title for [${item.org}:${item.artid}]`, LOGLEVEL.OFF);
         }
       }
     }
@@ -148,7 +110,7 @@ const checkWithDB = (item: ExtendedItem): Promise<void> => {
  * Send every item to be checked by the DB.
  */
 const checkAndPropagate = async (items: ExtendedItem[]): Promise<void> => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     let i = 0;
     const limit = items.length;
 
@@ -193,14 +155,14 @@ const retrieveArticles = (): Promise<void> => {
                   return nextFeed();
                 })
                 .catch((err) => {
-                  clog(`Could not retrieve ${medium.prefix + feedname + medium.suffix}`);
+                  clog.log(`Could not retrieve ${medium.prefix + feedname + medium.suffix}: ${err}`);
                   return nextFeed();
                 });
           }, async (err) => {
             // Callback function once all feeds are processed.
             if (err) {
               // Something went wrong when retrieving the feeds.
-              clog(err);
+              clog.log(err);
               return;
             }
 
@@ -211,10 +173,10 @@ const retrieveArticles = (): Promise<void> => {
           });
         }, (err) => {
           // Callback function once all media are processed.
-          clog(`Processed all media for ${countrycode}, retrieving next country`)
+          clog.log(`Processed all media for ${countrycode}, retrieving next country`)
           if (err) {
             // One of the media failed to process, do something here.
-            clog(err);
+            clog.log(err);
           }
 
           i++;
@@ -234,12 +196,11 @@ init()
     const start = moment();
     retrieveArticles().then(() => {
       const end = moment();
-      clog(`Finished scraping run after ${end.diff(start, 'seconds')}s`);
+      clog.log(`Finished scraping run after ${end.diff(start, 'seconds')}s`);
       process.exit(1);
     })
   })
   .catch((error) => {
-    clog(`Could not init OpenTitles.Scraper:`);
-    clog(error);
+    clog.log(`Could not init OpenTitles.Scraper: ${error}`, LOGLEVEL.ERROR);
     process.exit(1);
   });
