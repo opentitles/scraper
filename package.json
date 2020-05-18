@@ -20,14 +20,14 @@
     "rss-parser": "3.8.0"
   },
   "devDependencies": {
-    "@types/async": "3.2.1",
+    "@types/async": "3.2.3",
     "@types/cors": "2.8.6",
     "@types/express": "4.17.6",
-    "@types/mongodb": "3.5.16",
-    "@types/request": "2.48.4",
-    "@typescript-eslint/eslint-plugin": "2.31.0",
-    "@typescript-eslint/parser": "2.31.0",
+    "@types/mongodb": "3.5.17",
+    "@types/request": "2.48.5",
+    "@typescript-eslint/eslint-plugin": "2.33.0",
+    "@typescript-eslint/parser": "2.33.0",
     "eslint": "7.0.0",
-    "typescript": "3.8.3"
+    "typescript": "3.9.2"
   }
 }
