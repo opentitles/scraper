@@ -1,4 +1,6 @@
 import { Notifier } from './Notifier';
+import * as CONFIG from '../config';
+
 import { Clog, LOGLEVEL } from '@fdebijl/clog';
 import amqp from 'amqplib/callback_api';
 
@@ -8,7 +10,7 @@ export class PubSubNotifier implements Notifier {
 
   constructor () {
     this.clog = new Clog();
-    amqp.connect('amqp://localhost', (error0, connection) => {
+    amqp.connect(CONFIG.RABBITMQ_URL, (error0, connection) => {
       if (error0) {
         throw error0;
       }
