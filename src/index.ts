@@ -38,8 +38,9 @@ const init = (): Promise<MongoClient> => {
       useNewUrlParser: true,
       useUnifiedTopology: true
     }).then((client) => {
-      dbo = client.db(CONFIG.isProd ? CONFIG.MONGO_DB_PROD : CONFIG.MONGO_DB_TEST);
-      clog.log(`Connected to ${CONFIG.MONGO_URL}`, LOGLEVEL.DEBUG);
+      const dbname = CONFIG.isProd ? CONFIG.MONGO_DB_PROD : CONFIG.MONGO_DB_TEST;
+      dbo = client.db(dbname);
+      clog.log(`Connected to ${CONFIG.MONGO_URL} with database ${dbname}`, LOGLEVEL.DEBUG);
       notifier = new PubSubNotifier();
       resolve(client);
     }).catch((err) => {
