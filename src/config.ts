@@ -8,7 +8,7 @@ if (!isProd) {
 }
 
 export const {
-  RABBITMQ_URL = 'amqp://10.10.10.15',
+  RABBITMQ_URL = 'amqp://localhost',
   MONGO_URL = 'mongodb://10.10.10.15:7071,10.10.10.16:7072,10.10.10.17:7073/?replicaSet=archer&readPreference=primary&appname=OpenTitles%20Server',
   MONGO_DB_PROD = 'opentitles',
   MONGO_DB_TEST = 'opentitlestest',
