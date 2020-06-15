@@ -15,7 +15,7 @@
     "cors": "2.8.5",
     "dotenv": "8.2.0",
     "moment": "2.26.0",
-    "mongodb": "3.5.8",
+    "mongodb": "3.5.9",
     "request": "2.88.2",
     "rss-parser": "3.8.0"
   },
