@@ -28,4 +28,4 @@ RUN crontab /etc/cron.d/opentitles-cron
 RUN touch /var/log/cron.log
 RUN touch /usr/src/opentitles/crawler.log
 
-CMD ["cron", "-f"]
+CMD ["crond", "-f"]
