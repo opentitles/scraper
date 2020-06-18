@@ -113,6 +113,7 @@ const retrieveArticles = (): Promise<void> => {
 init()
   .then(() => {
     const start = moment();
+    clog.log(`Starting scraping run...`);
     retrieveArticles().then(() => {
       const end = moment();
       clog.log(`Finished scraping run after ${end.diff(start, 'seconds')}s`);

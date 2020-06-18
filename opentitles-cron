@@ -1,1 +1,1 @@
-*/5 * * * *  cd /usr/src/opentitles && /usr/local/bin/node index.js >> /dev/stdout 2>&1
+*/5 * * * *  cd /usr/src/opentitles && /usr/local/bin/node index.js > /proc/1/fd/1 2>/proc/1/fd/2
