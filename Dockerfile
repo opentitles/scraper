@@ -25,7 +25,7 @@ COPY opentitles-cron /etc/cron.d/opentitles-cron
 RUN chmod 0644 /etc/cron.d/opentitles-cron
 RUN crontab /etc/cron.d/opentitles-cron
 
-# Create the log files to be able to run tail
 RUN touch /var/log/cron.log
 RUN touch /usr/src/opentitles/crawler.log
-CMD crond && cat
+
+CMD ["cron", "-f"]
