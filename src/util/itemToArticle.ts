@@ -1,10 +1,6 @@
 import moment from 'moment';
 import { ExtendedItem } from "../domain/ExtendedItem";
 
-export const articleIdIsValid = (articleId: string): boolean => {
-  return !!articleId.match(/[a-z0-9]+/gi);
-}
-
 export const itemToArticle = (article: ExtendedItem): Promise<Article> => {
   return new Promise((resolve) => {
     resolve({

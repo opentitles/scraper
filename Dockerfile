@@ -8,7 +8,6 @@ WORKDIR /usr/src/opentitles
 RUN git clone https://github.com/opentitles/definition.git defs
 
 # Builder image used only for compiling Typescript files
-# Should also run unit tests and linting in the future
 FROM base AS builder
 RUN npm ci
 COPY . .
@@ -19,7 +18,6 @@ FROM base AS prod
 RUN npm ci --only=production
 COPY --from=builder /usr/src/opentitles/dist .
 COPY --from=definition /usr/src/opentitles/defs/media.json .
-ENV NODE_ENV=production
 
 # Setup cronjob to run crawler
 RUN mkdir -p /etc/cron.d
