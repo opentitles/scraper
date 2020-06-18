@@ -15,7 +15,7 @@
     "async": "3.2.0",
     "dotenv": "8.2.0",
     "moment": "2.26.0",
-    "mongodb": "3.5.8",
+    "mongodb": "3.5.9",
     "request": "2.88.2",
     "rss-parser": "3.8.0"
   },
@@ -29,7 +29,7 @@
     "@types/xml2js": "^0.4.5",
     "@typescript-eslint/eslint-plugin": "2.34.0",
     "@typescript-eslint/parser": "2.34.0",
-    "eslint": "7.1.0",
-    "typescript": "3.9.3"
+    "eslint": "7.2.0",
+    "typescript": "3.9.5"
   }
 }
