@@ -1,7 +1,7 @@
 import { ExtendedItem } from "../domain";
 import { Db } from "mongodb";
-import { checkWithDB } from "./checkWithDb";
 import { Notifier } from "../notifiers";
+import { checkWithDB } from "./checkWithDB";
 
 /**
  * Send every item to be checked by the DB.
