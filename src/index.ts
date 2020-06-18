@@ -4,6 +4,11 @@ import async from 'async';
 import Parser from 'rss-parser';
 import { MongoClient, Db } from 'mongodb';
 import { Clog, LOGLEVEL } from '@fdebijl/clog';
+import * as Sentry from '@sentry/node';
+
+if (process.env.DSN) {
+  Sentry.init({ dsn: process.env.DSN });
+}
 
 import * as CONFIG from './config';
 import { ExtendedOutput, ExtendedItem } from './domain';
@@ -122,5 +127,6 @@ init()
   })
   .catch((error) => {
     clog.log(`Could not init OpenTitles.Scraper: ${error}`, LOGLEVEL.ERROR);
+    Sentry.captureException(error);
     process.exit(1);
   });
