@@ -9,6 +9,10 @@ export const reduceGuid = (guid: string, mask: string): string | false => {
     return false;
   }
 
+  if (typeof guid !== 'string') {
+    return false;
+  }
+
   const matches = guid.match(mask);
   if (!matches) {
     return false;
