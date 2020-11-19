@@ -1,6 +1,6 @@
 {
   "name": "opentitles-scraper",
-  "version": "1.10.0",
+  "version": "2.0.0",
   "private": true,
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,7 @@
     "dotenv": "8.2.0",
     "moment": "2.28.0",
     "mongodb": "3.6.2",
+    "puppeteer": "^5.5.0",
     "request": "2.88.2",
     "rss-parser": "3.9.0"
   },
@@ -26,6 +27,7 @@
     "@types/cors": "2.8.8",
     "@types/express": "4.17.9",
     "@types/mongodb": "3.5.33",
+    "@types/puppeteer": "^5.4.0",
     "@types/request": "2.48.5",
     "@types/xml2js": "0.4.6",
     "@typescript-eslint/eslint-plugin": "4.7.0",

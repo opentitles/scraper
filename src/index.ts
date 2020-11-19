@@ -14,11 +14,14 @@ import * as CONFIG from './config';
 import { ExtendedOutput, ExtendedItem } from './domain';
 import {  } from './domain/ExtendedItem';
 import { deduplicate, processFeed } from './processors';
-import { Notifier, PubSubNotifier } from './notifiers';
+import { Notifier, PubSubNotifier, NullNotifier } from './notifiers';
 import { checkAndPropagate } from './util/checkAndPropagate';
+import { backcheck } from './util/backcheck';
 
 const parser = new Parser({
-  headers: {'User-Agent': 'OpenTitles Scraper by contact@opentitles.info'},
+  headers: {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36'
+  },
   timeout: 5000,
   maxRedirects: 3,
   customFields: {
@@ -27,7 +30,7 @@ const parser = new Parser({
 });
 
 // Note on logging: some extremely frequent events are supressed using LOGLEVEL.OFF in this file
-const clog = new Clog(CONFIG.MIN_LOGLEVEL as LOGLEVEL);
+const clog = new Clog();
 
 if (!fs.existsSync('media.json')) {
   throw new Error('Media.json could not be found in the scraper directory.');
@@ -46,7 +49,7 @@ const init = (): Promise<MongoClient> => {
       const dbname = CONFIG.isProd ? CONFIG.MONGO_DB_PROD : CONFIG.MONGO_DB_TEST;
       dbo = client.db(dbname);
       clog.log(`Connected to ${CONFIG.MONGO_URL} with database ${dbname}`, LOGLEVEL.DEBUG);
-      notifier = new PubSubNotifier();
+      notifier = new NullNotifier();
       resolve(client);
     }).catch((err) => {
       reject(err);
@@ -83,7 +86,7 @@ const retrieveArticles = (): Promise<void> => {
                   return nextFeed();
                 });
           }, async (err) => {
-            // Callback function once all feeds are processed.
+            // Callback function once all feeds are processed for this medium.
             if (err) {
               // Something went wrong when retrieving the feeds.
               clog.log(err);
@@ -107,6 +110,7 @@ const retrieveArticles = (): Promise<void> => {
           retrieveNextCountry();
         });
       } else {
+        clog.log('Finished scraping, starting backcheck', LOGLEVEL.DEBUG);
         resolve();
       }
     };
@@ -118,10 +122,12 @@ const retrieveArticles = (): Promise<void> => {
 init()
   .then(() => {
     const start = moment();
-    clog.log(`Starting scraping run...`);
-    retrieveArticles().then(() => {
+    clog.log(`Starting run...`);
+    retrieveArticles()
+    .then(() => backcheck(config, dbo, notifier))
+    .then(() => {
       const end = moment();
-      clog.log(`Finished scraping run after ${end.diff(start, 'seconds')}s`);
+      clog.log(`Finished run after ${end.diff(start, 'seconds')}s`);
       process.exit(1);
     })
   })

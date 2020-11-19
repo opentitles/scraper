@@ -1,10 +1,10 @@
 import { ExtendedItem } from "../domain";
 import { Db } from "mongodb";
 import { Notifier } from "../notifiers";
-import { checkWithDB } from "./checkWithDB";
+import { insertArticleToDB } from "./insertArticleToDB";
 
 /**
- * Send every item to be checked by the DB.
+ * Send every item to be stored in the DB.
  */
 export const checkAndPropagate = async (items: ExtendedItem[], dbo: Db, notifier: Notifier): Promise<void> => {
   return new Promise((resolve) => {
@@ -14,7 +14,7 @@ export const checkAndPropagate = async (items: ExtendedItem[], dbo: Db, notifier
     const check = async (): Promise<void> => {
       if (i < limit) {
         const item = items[i];
-        checkWithDB(item, dbo, notifier);
+        insertArticleToDB(item, dbo, notifier);
         i++;
         return check();
       } else {
