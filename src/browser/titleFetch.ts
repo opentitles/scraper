@@ -22,6 +22,10 @@ export const titleFetch = async (article: Article, medium: MediumDefinition): Pr
   const titleElement = await findTitleElement(medium, page);
   const title = await page.evaluate(titleElement => titleElement.textContent, titleElement);
 
+  // Remove whitespace, linebreaks and carriage returns
+  title.trim();
+  title.replace(/\n\r/gi, '');
+
   clog.log(`Got title <<${title}>> on ${article.org}:${article.articleID}`, LOGLEVEL.DEBUG);
 
   await browser.close();
