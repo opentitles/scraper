@@ -11,8 +11,9 @@ export class NullNotifier implements Notifier {
     this.clog = new Clog();
   }
 
-  async notifyListeners(article: Article): Promise<void> {
+  async notifyListeners(article: Article, medium: MediumDefinition): Promise<void> {
     this.clog.log(article, LOGLEVEL.DEBUG);
+    this.clog.log(medium, LOGLEVEL.DEBUG);
     return;
   }
 }

@@ -14,7 +14,6 @@ import * as CONFIG from './config';
 import { ExtendedOutput, ExtendedItem } from './domain';
 import {  } from './domain/ExtendedItem';
 import { deduplicate, processFeed } from './processors';
-import { Notifier, PubSubNotifier, NullNotifier } from './notifiers';
 import { checkAndPropagate } from './util/checkAndPropagate';
 import { backcheck } from './util/backcheck';
 
@@ -37,10 +36,14 @@ if (!fs.existsSync('media.json')) {
 } const config = JSON.parse(fs.readFileSync('media.json', 'utf8')) as MediaDefinition;
 
 let dbo: Db;
-let notifier: Notifier;
 
 const init = (): Promise<MongoClient> => {
   return new Promise((resolve, reject) => {
+    if (!CONFIG.MONGO_URL) {
+      reject('No MongoDB srv found in env variables (expected MONGO_URL to not be null)');
+      return;
+    }
+
     MongoClient.connect(CONFIG.MONGO_URL, {
       appname: 'OpenTitles Scraper',
       useNewUrlParser: true,
@@ -49,7 +52,6 @@ const init = (): Promise<MongoClient> => {
       const dbname = CONFIG.isProd ? CONFIG.MONGO_DB_PROD : CONFIG.MONGO_DB_TEST;
       dbo = client.db(dbname);
       clog.log(`Connected to ${CONFIG.MONGO_URL} with database ${dbname}`, LOGLEVEL.DEBUG);
-      notifier = new NullNotifier();
       resolve(client);
     }).catch((err) => {
       reject(err);
@@ -94,7 +96,7 @@ const retrieveArticles = (): Promise<void> => {
             }
 
             mediumfeed = await deduplicate(mediumfeed);
-            await checkAndPropagate(mediumfeed.items, dbo, notifier);
+            await checkAndPropagate(mediumfeed.items, dbo);
 
             return nextMedium();
           });
@@ -124,7 +126,7 @@ init()
     const start = moment();
     clog.log(`Starting run...`);
     retrieveArticles()
-    .then(() => backcheck(config, dbo, notifier))
+    .then(() => backcheck(config, dbo))
     .then(() => {
       const end = moment();
       clog.log(`Finished run after ${end.diff(start, 'seconds')}s`);

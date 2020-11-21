@@ -1,18 +1,17 @@
 import { Db } from "mongodb";
 import { Clog, LOGLEVEL} from '@fdebijl/clog';
 
-import { titleFetch } from "../browser/titleFetch";
 import { flattenMediaList } from "../media/flattenMediaList";
 import { getRecentArticles } from "../media/getRecentArticles";
-import { Notifier } from "../notifiers";
-import { insertTitleToDB } from "./insertTitleToDB";
+import { PubSubNotifier } from "../notifiers";
 
 const clog = new Clog();
+const notifier = new PubSubNotifier();
 
 /**
  * Check all articles from all media from the last three days for title changes
  */
-export const backcheck = async (config: MediaDefinition, dbo: Db, notifier: Notifier): Promise<void> => {
+export const backcheck = async (config: MediaDefinition, dbo: Db): Promise<void> => {
   return new Promise(async (resolve) => {
     // Get a list of all media without the overlying country keys
     const media = await flattenMediaList(config);
@@ -29,12 +28,12 @@ export const backcheck = async (config: MediaDefinition, dbo: Db, notifier: Noti
         clog.log(`Got ${articles.length} articles`, LOGLEVEL.DEBUG);
 
         for (const article of articles) {
-          const possibleNewTitle = await titleFetch(article, medium);
-          await insertTitleToDB(article, possibleNewTitle, dbo, notifier)
+          await notifier.notifyListeners(article, medium);
+
         }
 
         i++;
-        return checkMedium();
+        checkMedium();
       } else {
         resolve();
         return;

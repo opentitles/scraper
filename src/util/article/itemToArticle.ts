@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { ExtendedItem } from "../domain/ExtendedItem";
+import { ExtendedItem } from "../../domain/ExtendedItem";
 
 export const itemToArticle = (article: ExtendedItem): Promise<Article> => {
   return new Promise((resolve) => {

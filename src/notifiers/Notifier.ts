@@ -1,3 +1,3 @@
 export interface Notifier {
-  notifyListeners(article: Article): Promise<void>;
+  notifyListeners(article: Article, medium: MediumDefinition): Promise<void>;
 }
