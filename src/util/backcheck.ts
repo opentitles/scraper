@@ -29,7 +29,6 @@ export const backcheck = async (config: MediaDefinition, dbo: Db): Promise<void>
 
         for (const article of articles) {
           await notifier.notifyListeners(article, medium);
-
         }
 
         i++;

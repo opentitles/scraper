@@ -12,7 +12,7 @@ export const getRecentArticles = async (medium: MediumDefinition, dbo: Db, days 
       }
     })
     .sort({"titles.0.timestamp": -1})
-    .limit(500)
+    .limit(300)
     .toArray();
 
   return articles;
