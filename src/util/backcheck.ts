@@ -43,6 +43,7 @@ export const backcheck = async (config: MediaDefinition, dbo: Db): Promise<void>
           await notifier.notifyListeners(job.article, job.medium);
         }
 
+        resolve();
         return;
       }
     }
