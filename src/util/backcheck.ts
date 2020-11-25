@@ -18,6 +18,7 @@ export const backcheck = async (config: MediaDefinition, dbo: Db): Promise<void>
 
     let i = 0;
     const limit = media.length;
+    let jobs: {article: Article; medium: MediumDefinition}[] = [];
 
     const checkMedium = async (): Promise<void> => {
       if (i < limit) {
@@ -27,18 +28,34 @@ export const backcheck = async (config: MediaDefinition, dbo: Db): Promise<void>
         const articles = await getRecentArticles(medium, dbo);
         clog.log(`Got ${articles.length} articles`, LOGLEVEL.DEBUG);
 
-        for (const article of articles) {
-          await notifier.notifyListeners(article, medium);
-        }
+        jobs.push(...(articles.map(article => {
+          return {
+            article: article,
+            medium: medium
+          }
+        })))
 
         i++;
         checkMedium();
       } else {
-        resolve();
+        jobs = shuffle(jobs);
+        for (const job of jobs) {
+          await notifier.notifyListeners(job.article, job.medium);
+        }
+
         return;
       }
     }
 
     checkMedium();
   });
+}
+
+const shuffle = (a: Array<{article: Article; medium: MediumDefinition }>) => {
+  for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+  }
+
+  return a;
 }
