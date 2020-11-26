@@ -24,9 +24,9 @@ export const backcheck = async (config: MediaDefinition, dbo: Db): Promise<void>
       if (i < limit) {
         const medium = media[i];
 
-        clog.log(`Starting recent article fetch for ${medium.name}`, LOGLEVEL.DEBUG)
+        //clog.log(`Starting recent article fetch for ${medium.name}`, LOGLEVEL.DEBUG)
         const articles = await getRecentArticles(medium, dbo);
-        clog.log(`Got ${articles.length} articles`, LOGLEVEL.DEBUG);
+        //clog.log(`Got ${articles.length} articles`, LOGLEVEL.DEBUG);
 
         jobs.push(...(articles.map(article => {
           return {

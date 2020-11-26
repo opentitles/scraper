@@ -10,6 +10,7 @@ import amqp from 'amqplib/callback_api';
 export class PubSubNotifier implements Notifier {
   private clog: Clog;
   private channel?: amqp.Channel;
+  private queueName: string;
 
   constructor () {
     this.clog = new Clog();
@@ -17,6 +18,12 @@ export class PubSubNotifier implements Notifier {
     if (!CONFIG.RABBITMQ_URL) {
       throw new Error('No RabbitMQ url found in env variables (expected RABBITMQ_URL to not be null)');
     }
+
+    if (!CONFIG.QUEUE_NAME) {
+      throw new Error('No queue name found in env variables (expected QUEUE_NAME to not be null)');
+    }
+
+    this.queueName = CONFIG.QUEUE_NAME;
 
     amqp.connect(CONFIG.RABBITMQ_URL, (error0, connection) => {
       if (error0) {
@@ -29,12 +36,20 @@ export class PubSubNotifier implements Notifier {
         }
 
         this.channel = channel;
+        channel.assertQueue(this.queueName, {
+          durable: true
+        }, (err, queueInfo) => {
+          if (err) {
+            this.clog.log(`Could not connect to queue: ${err}`, LOGLEVEL.FATAL)
+          } else {
+            this.clog.log(`Connected succesfully to queue ${this.queueName} with ${queueInfo.messageCount} messages and ${queueInfo.consumerCount} consumers`)
+          }
+        });
       });
     });
   }
 
   async notifyListeners(article: Article, medium: MediumDefinition): Promise<void> {
-    const queue = 'opentitles_work';
     const payload = JSON.stringify({article, medium});
 
     if (!this.channel) {
@@ -42,12 +57,12 @@ export class PubSubNotifier implements Notifier {
       return;
     }
 
-    this.channel.assertQueue(queue, {
+    this.channel.assertQueue(this.queueName, {
       durable: true
     });
 
-    this.channel.sendToQueue(queue, Buffer.from(payload));
-    this.clog.log(`Dispatched job for ${medium.name}:${article.articleID}`)
+    this.channel.sendToQueue(this.queueName, Buffer.from(payload));
+    //this.clog.log(`Dispatched job for ${medium.name}:${article.articleID}`, LOGLEVEL.DEBUG)
     return;
   }
 }

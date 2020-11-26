@@ -12,5 +12,6 @@ export const {
   MONGO_DB_PROD,
   MONGO_DB_TEST,
   PORT,
-  LOGLEVEL
+  LOGLEVEL,
+  QUEUE_NAME
 } = process.env;

@@ -16,6 +16,7 @@ import {  } from './domain/ExtendedItem';
 import { deduplicate, processFeed } from './processors';
 import { checkAndPropagate } from './util/checkAndPropagate';
 import { backcheck } from './util/backcheck';
+import { seconds } from './util/seconds';
 
 const parser = new Parser({
   headers: {
@@ -126,7 +127,9 @@ init()
     const start = moment();
     clog.log(`Starting run...`);
     retrieveArticles()
+    .then(() => seconds(5))
     .then(() => backcheck(config, dbo))
+    .then(() => seconds(10))
     .then(() => {
       const end = moment();
       clog.log(`Finished run after ${end.diff(start, 'seconds')}s`);
