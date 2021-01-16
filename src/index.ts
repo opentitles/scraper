@@ -14,14 +14,16 @@ import * as CONFIG from './config';
 import { ExtendedOutput, ExtendedItem } from './domain';
 import {  } from './domain/ExtendedItem';
 import { deduplicate, processFeed } from './processors';
-import { Notifier, PubSubNotifier } from './notifiers';
+import { Notifier, NullNotifier, PubSubNotifier } from './notifiers';
 import { checkAndPropagate } from './util/checkAndPropagate';
+import { feedIsFresh } from './util/feedIsFresh';
 
 const parser = new Parser({
   headers: {'User-Agent': 'OpenTitles Scraper by contact@opentitles.info'},
   timeout: 5000,
   maxRedirects: 3,
   customFields: {
+    feed: ['pubDate'],
     item: ['wp:arc_uuid'],
   },
 });
@@ -74,8 +76,15 @@ const retrieveArticles = (): Promise<void> => {
           async.forEachSeries(medium.feeds, (feedname, nextFeed) => {
             parser.parseURL(medium.prefix + feedname + medium.suffix)
                 .then(async (feed) => {
-                  const confirmedFeed = await processFeed(feed, medium, feedname, countrycode) as ExtendedOutput;
-                  mediumfeed.items.push(...confirmedFeed.items);
+                  const { fresh, reason } = await feedIsFresh(feedname, medium, feed, dbo);
+                  if (fresh) {
+                    // Only process the feed if it's fresh
+                    const confirmedFeed = await processFeed(feed, medium, feedname, countrycode) as ExtendedOutput;
+                    mediumfeed.items.push(...confirmedFeed.items);
+                    clog.log(`Fresh feed [${medium.name}.${feedname}] (picked up pubdate: ${feed.pubDate}), Reason: ${reason}`, LOGLEVEL.DEBUG)
+                  } else {
+                    clog.log(`RSS Feed [${medium.name}.${feedname}] was not fresh! (picked up pubdate: ${feed.pubDate}), Reason: ${reason}`, LOGLEVEL.DEBUG)
+                  }
                   return nextFeed();
                 })
                 .catch((err) => {
