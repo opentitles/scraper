@@ -1,5 +1,7 @@
 import Parser from 'rss-parser';
 import { ExtendedOutput } from '../domain/ExtendedOutput';
+import { ParserFeedType } from '../domain/ParserFeedType';
+import { ParserItemType } from '../domain/ParserItemType';
 import { reduceGuid } from './reduceGuid';
 import { removeInvalidItems } from './removeInvalidItems';
 import { removeTitlelessItems } from './removeTitlelessItems';
@@ -12,7 +14,7 @@ import { removeTitlelessItems } from './removeTitlelessItems';
  * @param {string} countrycode The ISO 3166-1 Alpha-2 countrycode as defined in media.json
  * @return {object} The feed with all extra variables injected and empty/invalid entries removed.
  */
-export const processFeed = (feed: Parser.Output, medium: MediumDefinition, feedname: string, countrycode: string): Promise<ExtendedOutput> => {
+export const processFeed = (feed: ParserFeedType & Parser.Output<ParserItemType>, medium: MediumDefinition, feedname: string, countrycode: string): Promise<ExtendedOutput> => {
   return new Promise(async (resolve, reject) => {
     if (!feed.items) {
       reject('No items in feed');
@@ -22,9 +24,9 @@ export const processFeed = (feed: Parser.Output, medium: MediumDefinition, feedn
     let feedItems = await removeTitlelessItems(feed.items);
 
     feedItems = feedItems.map((item) => {
-      item.artid = reduceGuid(item[medium.id_container], medium.id_mask);
+      item.artid = reduceGuid(item[medium.id_container], medium.id_mask) as string;
       item.org = medium.name;
-      item.feedtitle = feed.title;
+      item.feedtitle = feed.title as string;
       item.sourcefeed = feedname;
       item.lang = countrycode;
       item.title = item.title.trim();
@@ -33,6 +35,6 @@ export const processFeed = (feed: Parser.Output, medium: MediumDefinition, feedn
 
     // Remove articles for which no guid exists or none was found
     feed.items = await removeInvalidItems(feedItems);
-    resolve(feed as ExtendedOutput);
+    resolve(feed as unknown as ExtendedOutput);
   });
 }
