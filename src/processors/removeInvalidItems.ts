@@ -1,9 +1,9 @@
-import { Item } from 'rss-parser';
+import { ExtendedItem } from '../domain';
 
-export const removeInvalidItems = (feed: Item[]): Promise<Item[]> => {
+export const removeInvalidItems = (feed: ExtendedItem[]): Promise<ExtendedItem[]> => {
   return new Promise((resolve) => {
     resolve(feed.filter((item) => {
       return !!item.artid;
-    }));
+    }) as ExtendedItem[]);
   });
 }

@@ -1,10 +1,10 @@
 import { Item } from 'rss-parser';
-import { ConfirmedItem } from '../domain/ConfirmedItem';
+import { ExtendedItem } from '../domain';
 
-export const removeTitlelessItems = (feed: Item[]): Promise<ConfirmedItem[]> => {
+export const removeTitlelessItems = (feed: Item[]): Promise<ExtendedItem[]> => {
   return new Promise((resolve) => {
     resolve(feed.filter((item) => {
       return !!item.title;
-    }) as ConfirmedItem[]);
+    }) as ExtendedItem[]);
   });
 }

@@ -17,8 +17,11 @@ import { deduplicate, processFeed } from './processors';
 import { Notifier, NullNotifier, PubSubNotifier } from './notifiers';
 import { checkAndPropagate } from './util/checkAndPropagate';
 import { feedIsFresh } from './util/feedIsFresh';
+import { ParserFeedType } from './domain/ParserFeedType';
+import { ParserItemType } from './domain/ParserItemType';
 
-const parser = new Parser({
+
+const parser: Parser<ParserFeedType, ParserItemType> = new Parser({
   headers: {'User-Agent': 'OpenTitles Scraper by contact@opentitles.info'},
   timeout: 5000,
   maxRedirects: 3,

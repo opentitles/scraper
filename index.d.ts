@@ -20,7 +20,7 @@ declare type MediumDefinition = {
   prefix: string;
   suffix: string;
   feeds: string[];
-  id_container: string;
+  id_container: 'link' | 'guid';
   id_mask: string;
   page_id_location: string;
   page_id_query: string;
