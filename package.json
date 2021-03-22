@@ -10,7 +10,7 @@
   "author": "Floris de Bijl",
   "license": "AGPL-3.0",
   "dependencies": {
-    "@fdebijl/clog": "1.79.0",
+    "@fdebijl/clog": "1.80.0",
     "@sentry/node": "6.2.3",
     "amqplib": "0.7.1",
     "async": "3.2.0",
