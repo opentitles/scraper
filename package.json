@@ -11,12 +11,12 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "@fdebijl/clog": "1.79.0",
-    "@sentry/node": "6.2.2",
+    "@sentry/node": "6.2.3",
     "amqplib": "0.7.1",
     "async": "3.2.0",
     "dotenv": "8.2.0",
     "moment": "2.29.1",
-    "mongodb": "3.6.4",
+    "mongodb": "3.6.5",
     "request": "2.88.2",
     "rss-parser": "3.12.0"
   },
