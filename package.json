@@ -24,13 +24,13 @@
     "@types/amqplib": "0.5.17",
     "@types/async": "3.2.6",
     "@types/cors": "2.8.10",
-    "@types/express": "4.17.11",
-    "@types/mongodb": "3.6.16",
+    "@types/express": "4.17.12",
+    "@types/mongodb": "3.6.17",
     "@types/request": "2.48.5",
     "@types/xml2js": "0.4.8",
-    "@typescript-eslint/eslint-plugin": "4.24.0",
-    "@typescript-eslint/parser": "4.24.0",
+    "@typescript-eslint/eslint-plugin": "4.25.0",
+    "@typescript-eslint/parser": "4.25.0",
     "eslint": "7.27.0",
-    "typescript": "4.2.4"
+    "typescript": "4.3.2"
   }
 }
