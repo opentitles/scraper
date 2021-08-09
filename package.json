@@ -10,13 +10,13 @@
   "author": "Floris de Bijl",
   "license": "AGPL-3.0",
   "dependencies": {
-    "@fdebijl/clog": "1.99.0",
-    "@sentry/node": "6.10.0",
+    "@fdebijl/clog": "1.100.0",
+    "@sentry/node": "6.11.0",
     "amqplib": "0.8.0",
-    "async": "3.2.0",
+    "async": "3.2.1",
     "dotenv": "8.6.0",
     "moment": "2.29.1",
-    "mongodb": "3.6.10",
+    "mongodb": "3.6.11",
     "request": "2.88.2",
     "rss-parser": "3.12.0"
   },
