@@ -11,7 +11,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "@fdebijl/clog": "1.105.0",
-    "@sentry/node": "6.13.0",
+    "@sentry/node": "6.13.2",
     "amqplib": "0.8.0",
     "async": "3.2.1",
     "dotenv": "8.6.0",
