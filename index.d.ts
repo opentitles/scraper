@@ -29,7 +29,6 @@ declare type MediumDefinition = {
 }
 
 declare type Article = {
-  _id?: string;
   org: string;
   articleID: string;
   feedtitle: string;

@@ -20,7 +20,11 @@ export const feedIsFresh = async (feedname: string, medium: MediumDefinition, fe
   } | null = await dbo.collection('feeddates').findOne({
     org: medium.name,
     feed: feedname
-  });
+  }) as unknown as {
+    org: string;
+    feed: string;
+    pubdate: string;
+  } | null
 
   if (!feedDateEntry) {
     // No feeddate so it's likely to be fresh. Let's insert a new feeddate here.

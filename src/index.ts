@@ -44,9 +44,7 @@ let notifier: Notifier;
 const init = (): Promise<MongoClient> => {
   return new Promise((resolve, reject) => {
     MongoClient.connect(CONFIG.MONGO_URL, {
-      appname: 'OpenTitles Scraper',
-      useNewUrlParser: true,
-      useUnifiedTopology: true
+      appName: 'OpenTitles Scraper'
     }).then((client) => {
       const dbname = CONFIG.isProd ? CONFIG.MONGO_DB_PROD : CONFIG.MONGO_DB_TEST;
       dbo = client.db(dbname);
