@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "compile": "tsc",
-    "semanticrelease": "semantic-release"
+    "semanticrelease": "semantic-release",
+    "lint": "eslint \"./src/**/*.ts\" --max-warnings 10"
   },
   "release": {
     "analyzeCommits": "semantic-release-conventional-commits"
@@ -25,8 +26,9 @@
     "rss-parser": "3.12.0"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^6.0.1",
-    "@semantic-release/git": "^10.0.1",
+    "@fdebijl/eslint-config": "1.2.0",
+    "@semantic-release/changelog": "6.0.1",
+    "@semantic-release/git": "10.0.1",
     "@types/amqplib": "0.8.2",
     "@types/async": "3.2.12",
     "@types/cors": "2.8.12",
@@ -37,8 +39,8 @@
     "@typescript-eslint/eslint-plugin": "5.17.0",
     "@typescript-eslint/parser": "5.17.0",
     "eslint": "8.12.0",
-    "semantic-release": "^19.0.2",
-    "semantic-release-conventional-commits": "^3.0.0",
+    "semantic-release": "19.0.2",
+    "semantic-release-conventional-commits": "3.0.0",
     "typescript": "4.6.3"
   }
 }

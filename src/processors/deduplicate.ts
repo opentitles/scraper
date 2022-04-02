@@ -1,4 +1,4 @@
-import { ExtendedOutput } from "../domain/ExtendedOutput";
+import { ExtendedOutput } from '../domain/ExtendedOutput';
 
 /**
  * Takes a fully populated feed from one medium and removes the duplicates.
@@ -6,7 +6,7 @@ import { ExtendedOutput } from "../domain/ExtendedOutput";
  * @return {object} The mediumfeed without any duplicate entries.
  */
 export const deduplicate = (feed: ExtendedOutput): Promise<ExtendedOutput> => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     // Reduce feed items to unique ID's only
     const seen = {};
 
@@ -18,6 +18,7 @@ export const deduplicate = (feed: ExtendedOutput): Promise<ExtendedOutput> => {
 
       // eslint-disable-next-line
       // @ts-ignore
+      // eslint-disable-next-line no-prototype-builtins
       return seen.hasOwnProperty(item.artid) ? false : (seen[item.artid] = true);
     });
 

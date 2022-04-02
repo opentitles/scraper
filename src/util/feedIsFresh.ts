@@ -1,8 +1,8 @@
-import { Db } from "mongodb"
-import Parser from "rss-parser"
-import moment from "moment";
-import { ParserItemType } from "../domain/ParserItemType";
-import { ParserFeedType } from "../domain/ParserFeedType";
+import { Db } from 'mongodb'
+import Parser from 'rss-parser'
+import moment from 'moment';
+import { ParserItemType } from '../domain/ParserItemType';
+import { ParserFeedType } from '../domain/ParserFeedType';
 
 export const feedIsFresh = async (feedname: string, medium: MediumDefinition, feed: ParserFeedType & Parser.Output<ParserItemType>, dbo: Db): Promise<{fresh: boolean, reason: string}> => {
   if (!feed.pubDate) {

@@ -1,4 +1,4 @@
-import { Db } from "mongodb";
+import { Db } from 'mongodb';
 
 /**
  * Find an article in the database for a given organisation and ID.

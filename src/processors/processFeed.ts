@@ -14,27 +14,24 @@ import { removeTitlelessItems } from './removeTitlelessItems';
  * @param {string} countrycode The ISO 3166-1 Alpha-2 countrycode as defined in media.json
  * @return {object} The feed with all extra variables injected and empty/invalid entries removed.
  */
-export const processFeed = (feed: ParserFeedType & Parser.Output<ParserItemType>, medium: MediumDefinition, feedname: string, countrycode: string): Promise<ExtendedOutput> => {
-  return new Promise(async (resolve, reject) => {
-    if (!feed.items) {
-      reject('No items in feed');
-      return;
-    }
+export const processFeed = async (feed: ParserFeedType & Parser.Output<ParserItemType>, medium: MediumDefinition, feedname: string, countrycode: string): Promise<ExtendedOutput> => {
+  if (!feed.items) {
+    throw new Error('No items in feed');
+  }
 
-    let feedItems = await removeTitlelessItems(feed.items);
+  let feedItems = await removeTitlelessItems(feed.items);
 
-    feedItems = feedItems.map((item) => {
-      item.artid = reduceGuid(item[medium.id_container], medium.id_mask) as string;
-      item.org = medium.name;
-      item.feedtitle = feed.title as string;
-      item.sourcefeed = feedname;
-      item.lang = countrycode;
-      item.title = item.title.trim();
-      return item;
-    });
-
-    // Remove articles for which no guid exists or none was found
-    feed.items = await removeInvalidItems(feedItems);
-    resolve(feed as unknown as ExtendedOutput);
+  feedItems = feedItems.map((item) => {
+    item.artid = reduceGuid(item[medium.id_container], medium.id_mask) as string;
+    item.org = medium.name;
+    item.feedtitle = feed.title as string;
+    item.sourcefeed = feedname;
+    item.lang = countrycode;
+    item.title = item.title.trim();
+    return item;
   });
+
+  // Remove articles for which no guid exists or none was found
+  feed.items = await removeInvalidItems(feedItems);
+  return feed as unknown as ExtendedOutput;
 }
