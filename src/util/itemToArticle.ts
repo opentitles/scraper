@@ -2,8 +2,8 @@ import moment from 'moment';
 import { ExtendedItem } from '../domain/ExtendedItem';
 
 export const itemToArticle = async (article: ExtendedItem): Promise<Article> => {
-  if (article.guid.startsWith('$')) {
-    article.guid = article.guid.replace('$', '_$');
+  if (typeof(article.guid) === 'string') {
+    article.guid = article.guid.replace(/^\$/g, '_$');
   }
 
   return {

@@ -4,10 +4,29 @@ import async from 'async';
 import Parser from 'rss-parser';
 import { MongoClient, Db } from 'mongodb';
 import { Clog, LOGLEVEL } from '@fdebijl/clog';
+
 import * as Sentry from '@sentry/node';
+import { RewriteFrames } from '@sentry/integrations';
+
+declare global {
+  namespace NodeJS {
+    interface Global {
+      __rootdir__: string;
+    }
+  }
+}
+
+global.__rootdir__ = __dirname || process.cwd();
 
 if (process.env.DSN) {
-  Sentry.init({ dsn: process.env.DSN });
+  Sentry.init({
+    dsn: process.env.DSN,
+    integrations: [
+      new RewriteFrames({
+        root: global.__rootdir__,
+      }),
+    ]
+  });
 }
 
 import * as CONFIG from './config';
@@ -32,7 +51,7 @@ const parser: Parser<ParserFeedType, ParserItemType> = new Parser({
 });
 
 // Note on logging: some extremely frequent events are supressed using LOGLEVEL.OFF in this file
-const clog = new Clog(CONFIG.MIN_LOGLEVEL as LOGLEVEL);
+export const clog = new Clog();
 
 if (!fs.existsSync('media.json')) {
   throw new Error('Media.json could not be found in the scraper directory.');
@@ -49,7 +68,7 @@ const init = (): Promise<MongoClient> => {
       const dbname = CONFIG.isProd ? CONFIG.MONGO_DB_PROD : CONFIG.MONGO_DB_TEST;
       dbo = client.db(dbname);
       clog.log(`Connected to ${CONFIG.MONGO_URL} with database ${dbname}`, LOGLEVEL.DEBUG);
-      notifier = new PubSubNotifier();
+      notifier = new NullNotifier();
       resolve(client);
     }).catch((err) => {
       reject(err);

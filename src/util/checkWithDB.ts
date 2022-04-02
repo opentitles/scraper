@@ -6,8 +6,7 @@ import moment from 'moment';
 import { findArticle } from './findArticle';
 import { itemToArticle } from './itemToArticle';
 import { Notifier } from '../notifiers';
-
-const clog = new Clog();
+import { clog } from '..';
 
 /**
  * Check with the database if the given article exists and update the title if we have a new one.

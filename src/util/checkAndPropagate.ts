@@ -1,5 +1,7 @@
-import { ExtendedItem } from '../domain';
 import { Db } from 'mongodb';
+import * as Sentry from "@sentry/node";
+
+import { ExtendedItem } from '../domain';
 import { Notifier } from '../notifiers';
 import { checkWithDB } from './checkWithDB';
 
@@ -14,6 +16,7 @@ export const checkAndPropagate = async (items: ExtendedItem[], dbo: Db, notifier
     const check = async (): Promise<void> => {
       if (i < limit) {
         const item = items[i];
+        Sentry.setContext('item', item);
         checkWithDB(item, dbo, notifier);
         i++;
         return check();

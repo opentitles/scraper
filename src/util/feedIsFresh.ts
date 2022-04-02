@@ -9,7 +9,7 @@ export const feedIsFresh = async (feedname: string, medium: MediumDefinition, fe
     // There's no way of knowing if the feed is fresh if there's no pubdate, so we let it slide
     return {
       fresh: true,
-      reason: 'nopubdate'
+      reason: 'noPubDate'
     };
   }
 
