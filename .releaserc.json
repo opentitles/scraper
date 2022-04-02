@@ -4,12 +4,7 @@
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
     "@semantic-release/github",
-    ["@semantic-release/git", {
-      "assets": [
-        "CHANGELOG.md",
-        "package.json",
-        "package-lock.json"
-      ]
-    }]
-  ]
+    "@semantic-release/git"
+  ],
+  "analyzeCommits": "semantic-release-conventional-commits"
 }

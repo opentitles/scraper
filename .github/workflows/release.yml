@@ -15,7 +15,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 16
       - name: Install dependencies
@@ -26,6 +26,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run semanticrelease
+      - name: Set revision env
+        run: echo "APP_REVISION=$(git describe --tags --always)" >> $GITHUB_ENV
       - name: Create Sentry release
         uses: getsentry/action-release@v1
         env:
@@ -35,3 +37,4 @@ jobs:
         with:
           environment: 'production'
           sourcemaps: './dist'
+          version: ${{ env.APP_REVISION }}

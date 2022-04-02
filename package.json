@@ -9,9 +9,6 @@
     "semanticrelease": "semantic-release",
     "lint": "eslint \"./src/**/*.ts\" --max-warnings 10"
   },
-  "release": {
-    "analyzeCommits": "semantic-release-conventional-commits"
-  },
   "author": "Floris de Bijl",
   "license": "AGPL-3.0",
   "dependencies": {
