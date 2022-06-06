@@ -15,7 +15,7 @@
     "@fdebijl/clog": "1.127.0",
     "@sentry/integrations": "6.19.7",
     "@sentry/node": "6.19.7",
-    "amqplib": "0.9.1",
+    "amqplib": "0.10.0",
     "async": "3.2.3",
     "dotenv": "16.0.1",
     "moment": "2.29.3",
