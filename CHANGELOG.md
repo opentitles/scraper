@@ -1,3 +1,10 @@
+## [1.10.1](https://github.com/opentitles/scraper/compare/v1.10.0...v1.10.1) (2022-06-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency amqplib to v0.10.0 ([002706d](https://github.com/opentitles/scraper/commit/002706df146cb35ca1d3b7d0eb9f3c4e3b04afd5))
+
 # [1.10.0](https://github.com/opentitles/scraper/compare/v1.9.1...v1.10.0) (2022-06-06)
 
 ## [1.9.1](https://github.com/opentitles/scraper/compare/v1.9.0...v1.9.1) (2022-05-30)
