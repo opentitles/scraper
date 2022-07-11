@@ -1,3 +1,10 @@
+## [1.16.1](https://github.com/opentitles/scraper/compare/v1.16.0...v1.16.1) (2022-07-11)
+
+
+### Bug Fixes
+
+* **deps:** update dependency moment to v2.29.4 ([7f98e80](https://github.com/opentitles/scraper/commit/7f98e806955869f5fe9d0792fa10d0fda2f35c3c))
+
 # [1.16.0](https://github.com/opentitles/scraper/compare/v1.15.1...v1.16.0) (2022-07-11)
 
 ## [1.15.1](https://github.com/opentitles/scraper/compare/v1.15.0...v1.15.1) (2022-07-04)
