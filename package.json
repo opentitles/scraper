@@ -12,14 +12,14 @@
   "author": "Floris de Bijl",
   "license": "AGPL-3.0",
   "dependencies": {
-    "@fdebijl/clog": "1.135.0",
+    "@fdebijl/clog": "1.136.0",
     "@sentry/integrations": "6.19.7",
     "@sentry/node": "6.19.7",
-    "amqplib": "0.10.0",
+    "amqplib": "0.10.2",
     "async": "3.2.4",
     "dotenv": "16.0.1",
     "moment": "2.29.4",
-    "mongodb": "4.8.0",
+    "mongodb": "4.8.1",
     "request": "2.88.2",
     "rss-parser": "3.12.0"
   },
