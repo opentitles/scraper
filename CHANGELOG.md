@@ -1,3 +1,10 @@
+## [1.27.1](https://github.com/opentitles/scraper/compare/v1.27.0...v1.27.1) (2022-09-26)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @fdebijl/clog to v1.143.0 ([a7e5f5b](https://github.com/opentitles/scraper/commit/a7e5f5b1f15c82afd11902f4243d4368027bc5eb))
+
 # [1.27.0](https://github.com/opentitles/scraper/compare/v1.26.2...v1.27.0) (2022-09-26)
 
 ## [1.26.2](https://github.com/opentitles/scraper/compare/v1.26.1...v1.26.2) (2022-09-19)
