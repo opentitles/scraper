@@ -1,3 +1,5 @@
+# [1.29.0](https://github.com/opentitles/scraper/compare/v1.28.1...v1.29.0) (2022-10-10)
+
 ## [1.28.1](https://github.com/opentitles/scraper/compare/v1.28.0...v1.28.1) (2022-10-03)
 
 
