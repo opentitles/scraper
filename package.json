@@ -19,7 +19,7 @@
     "async": "3.2.4",
     "dotenv": "16.0.3",
     "moment": "2.29.4",
-    "mongodb": "4.10.0",
+    "mongodb": "4.11.0",
     "request": "2.88.2",
     "rss-parser": "3.12.0"
   },
