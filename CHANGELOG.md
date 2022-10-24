@@ -1,3 +1,10 @@
+## [1.31.1](https://github.com/opentitles/scraper/compare/v1.31.0...v1.31.1) (2022-10-24)
+
+
+### Bug Fixes
+
+* **deps:** update dependency mongodb to v4.11.0 ([eae6740](https://github.com/opentitles/scraper/commit/eae67404cd80ccba79da1db762955590c175214b))
+
 # [1.31.0](https://github.com/opentitles/scraper/compare/v1.30.1...v1.31.0) (2022-10-24)
 
 ## [1.30.1](https://github.com/opentitles/scraper/compare/v1.30.0...v1.30.1) (2022-10-17)
