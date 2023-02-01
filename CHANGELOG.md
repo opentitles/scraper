@@ -1,3 +1,10 @@
+## [1.34.1](https://github.com/opentitles/scraper/compare/v1.34.0...v1.34.1) (2023-02-01)
+
+
+### Bug Fixes
+
+* **deps:** update deps ([874c51c](https://github.com/opentitles/scraper/commit/874c51c6d125fd22434b94da37bfcb7a21e1a785))
+
 # [1.34.0](https://github.com/opentitles/scraper/compare/v1.33.1...v1.34.0) (2023-02-01)
 
 ## [1.33.1](https://github.com/opentitles/scraper/compare/v1.33.0...v1.33.1) (2023-01-01)
