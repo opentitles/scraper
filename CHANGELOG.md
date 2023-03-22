@@ -1,3 +1,10 @@
+# [1.36.0](https://github.com/opentitles/scraper/compare/v1.35.1...v1.36.0) (2023-03-22)
+
+
+### Bug Fixes
+
+* **deps:** update dependency mongodb to v5 ([#344](https://github.com/opentitles/scraper/issues/344)) ([f55e441](https://github.com/opentitles/scraper/commit/f55e4419c2d5f458365dc817d2211334550d7109))
+
 ## [1.35.1](https://github.com/opentitles/scraper/compare/v1.35.0...v1.35.1) (2023-03-01)
 
 
