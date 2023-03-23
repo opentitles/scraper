@@ -1,0 +1,39 @@
+name: Prelease Checks
+
+on:
+  pull_request:
+    branches:
+      - master
+      - main
+
+env:
+  NODE_VERSION: '18'
+
+lint:
+    name: Lint
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run lint
+        run: npm run lint
+  build:
+    name: Build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run build
+        run: npm run compile
