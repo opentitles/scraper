@@ -1,20 +1,21 @@
-import { Notifier } from './Notifier';
 import { Clog, LOGLEVEL } from '@fdebijl/clog';
+import { Notifier } from './Notifier';
+import * as CONFIG from '../config';
 
 export class WebhookNotifier implements Notifier {
   private clog: Clog;
 
-  private listeners: Listener[] = [
-    {
-      name: 'NOSEdits',
-      interestedOrgs: ['NOS'],
-      webhookuri: 'http://10.10.10.15:7676/notify',
-    },
-  ];
+  private listeners: Listener[];
 
   constructor () {
-    // Clog will pick up the MIN_LOGLEVEL from env
     this.clog = new Clog();
+
+    try {
+      this.listeners = JSON.parse(CONFIG.WEBHOOK_LISTENERS);
+    } catch (e) {
+      this.clog.log(`Couldn't load webhook listeners from env: ${JSON.stringify(e)}`, LOGLEVEL.WARN);
+      this.listeners = [];
+    }
   }
 
   /**

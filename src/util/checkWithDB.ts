@@ -1,6 +1,6 @@
 import { ExtendedItem } from '../domain';
 import { Db } from 'mongodb';
-import { Clog, LOGLEVEL } from '@fdebijl/clog';
+import { LOGLEVEL } from '@fdebijl/clog';
 import moment from 'moment';
 
 import { findArticle } from './findArticle';

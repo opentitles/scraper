@@ -1,5 +1,5 @@
 import { Db } from 'mongodb';
-import * as Sentry from "@sentry/node";
+import * as Sentry from '@sentry/node';
 
 import { ExtendedItem } from '../domain';
 import { Notifier } from '../notifiers';

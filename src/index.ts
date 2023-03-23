@@ -8,7 +8,15 @@ import { Clog, LOGLEVEL } from '@fdebijl/clog';
 import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 
+import * as CONFIG from './config';
+import { ExtendedOutput, ExtendedItem } from './domain';
+import { deduplicate, processFeed } from './processors';
+import { NotifierFactory, Notifier } from './notifiers';
+import { checkAndPropagate, feedIsFresh } from './util';
+import { ParserFeedType, ParserItemType} from './domain';
+
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace NodeJS {
     interface Global {
       __rootdir__: string;
@@ -28,17 +36,6 @@ if (process.env.DSN) {
     ]
   });
 }
-
-import * as CONFIG from './config';
-import { ExtendedOutput, ExtendedItem } from './domain';
-import {  } from './domain/ExtendedItem';
-import { deduplicate, processFeed } from './processors';
-import { Notifier, NullNotifier, PubSubNotifier } from './notifiers';
-import { checkAndPropagate } from './util/checkAndPropagate';
-import { feedIsFresh } from './util/feedIsFresh';
-import { ParserFeedType } from './domain/ParserFeedType';
-import { ParserItemType } from './domain/ParserItemType';
-
 
 const parser: Parser<ParserFeedType, ParserItemType> = new Parser({
   headers: {'User-Agent': 'OpenTitles Scraper by contact@opentitles.info'},
@@ -60,20 +57,16 @@ if (!fs.existsSync('media.json')) {
 let dbo: Db;
 let notifier: Notifier;
 
-const init = (): Promise<MongoClient> => {
-  return new Promise((resolve, reject) => {
-    MongoClient.connect(CONFIG.MONGO_URL, {
-      appName: 'OpenTitles Scraper'
-    }).then((client) => {
-      const dbname = CONFIG.isProd ? CONFIG.MONGO_DB_PROD : CONFIG.MONGO_DB_TEST;
-      dbo = client.db(dbname);
-      clog.log(`Connected to ${CONFIG.MONGO_URL} with database ${dbname}`, LOGLEVEL.DEBUG);
-      notifier = new PubSubNotifier();
-      resolve(client);
-    }).catch((err) => {
-      reject(err);
-    });
+const init = async (): Promise<MongoClient> => {
+  const client = await MongoClient.connect(CONFIG.MONGO_URL, {
+    appName: 'OpenTitles Scraper'
   });
+
+  const dbname = CONFIG.isProd ? CONFIG.MONGO_DB_PROD : CONFIG.MONGO_DB_TEST;
+  dbo = client.db(dbname);
+  clog.log(`Connected to ${CONFIG.MONGO_URL} with database ${dbname}`, LOGLEVEL.DEBUG);
+  notifier = NotifierFactory();
+  return client;
 }
 
 /**

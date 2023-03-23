@@ -7,9 +7,11 @@ if (!isProd) {
 }
 
 export const {
-  RABBITMQ_URL = 'amqp://10.10.10.15',
-  MONGO_URL = 'mongodb://10.10.10.15:7071,10.10.10.16:7072,10.10.10.17:7073/?replicaSet=archer&readPreference=primary&appname=OpenTitles%20Server',
+  RABBITMQ_URL = 'amqp://127.0.0.1',
+  MONGO_URL = 'mongodb://127.0.0.1:27017',
   MONGO_DB_PROD = 'opentitles',
   MONGO_DB_TEST = 'opentitlestest',
-  PORT = 8083
+  PORT = 8083,
+  NOTIFIER = 'pubsub',
+  WEBHOOK_LISTENERS = '[]'
 } = process.env;
