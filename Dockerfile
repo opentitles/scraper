@@ -1,4 +1,4 @@
-FROM node:18-alpine AS base
+FROM node:19-alpine AS base
 WORKDIR /usr/src/opentitles
 COPY package*.json ./
 
