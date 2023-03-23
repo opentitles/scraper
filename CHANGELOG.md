@@ -1,3 +1,10 @@
+# [1.37.0](https://github.com/opentitles/scraper/compare/v1.36.0...v1.37.0) (2023-03-23)
+
+
+### Features
+
+* update scraper to modern opentitles standards ([#351](https://github.com/opentitles/scraper/issues/351)) ([0a60ce7](https://github.com/opentitles/scraper/commit/0a60ce7635dabb6440615fd5ef2f85f5c315630e))
+
 # [1.36.0](https://github.com/opentitles/scraper/compare/v1.35.1...v1.36.0) (2023-03-22)
 
 
