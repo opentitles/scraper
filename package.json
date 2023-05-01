@@ -21,7 +21,7 @@
     "moment": "2.29.4",
     "mongodb": "5.2.0",
     "request": "2.88.2",
-    "rss-parser": "3.12.0"
+    "rss-parser": "3.13.0"
   },
   "devDependencies": {
     "@fdebijl/eslint-config": "1.3.0",
