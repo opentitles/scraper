@@ -1,3 +1,10 @@
+## [1.40.1](https://github.com/opentitles/scraper/compare/v1.40.0...v1.40.1) (2023-08-31)
+
+
+### Bug Fixes
+
+* **deps:** update dependency mongodb to v5.8.0 [security] ([45a6c1b](https://github.com/opentitles/scraper/commit/45a6c1bd9fa4c3371eb8872eb935f718a6330376))
+
 # [1.40.0](https://github.com/opentitles/scraper/compare/v1.39.0...v1.40.0) (2023-07-01)
 
 
