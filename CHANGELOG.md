@@ -1,3 +1,14 @@
+# [1.41.0](https://github.com/opentitles/scraper/compare/v1.40.1...v1.41.0) (2024-03-01)
+
+
+### Bug Fixes
+
+* **deps:** update deps ([fde254f](https://github.com/opentitles/scraper/commit/fde254fe6dc4237f5b382b8e04950e2cf4379e68))
+* **deps:** update deps ([697cb16](https://github.com/opentitles/scraper/commit/697cb1655e9d6f7e99988ff25c811147e77907cf))
+* **deps:** update deps ([eb2fdd7](https://github.com/opentitles/scraper/commit/eb2fdd73de794499f414ea43ef94af17b9ad2d30))
+* **deps:** update deps ([221f31f](https://github.com/opentitles/scraper/commit/221f31fe18dcfb15a90c301ff4f3b9c317e1dbef))
+* **deps:** update deps ([e2efc4b](https://github.com/opentitles/scraper/commit/e2efc4ba37f95492e5b2317b118bcc03f1bbab42))
+
 ## [1.40.1](https://github.com/opentitles/scraper/compare/v1.40.0...v1.40.1) (2023-08-31)
 
 
