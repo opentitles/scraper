@@ -1,3 +1,10 @@
+## [1.44.3](https://github.com/opentitles/scraper/compare/v1.44.2...v1.44.3) (2024-07-01)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @sentry/node to v7.117.0 ([e4c20c0](https://github.com/opentitles/scraper/commit/e4c20c06a58944756719ec23c718cd354eea6dee))
+
 ## [1.44.2](https://github.com/opentitles/scraper/compare/v1.44.1...v1.44.2) (2024-07-01)
 
 
