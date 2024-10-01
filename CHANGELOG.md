@@ -1,3 +1,10 @@
+# [1.47.0](https://github.com/opentitles/scraper/compare/v1.46.0...v1.47.0) (2024-10-01)
+
+
+### Bug Fixes
+
+* **deps:** update deps ([86ad4e5](https://github.com/opentitles/scraper/commit/86ad4e576ea61b0106f4b525522ba956cf5f6720))
+
 # [1.46.0](https://github.com/opentitles/scraper/compare/v1.45.0...v1.46.0) (2024-09-01)
 
 
